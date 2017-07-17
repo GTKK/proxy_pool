@@ -48,10 +48,12 @@ class ProxyRefreshSchedule(ProxyManager):
         self.db.changeTable(self.raw_proxy_queue)
         raw_proxy = self.db.pop()
         self.log.info('%s start validProxy_a' % time.ctime())
-        exist_proxy = self.db.getAll()
+        # exist_proxy = self.db.getAll()
         while raw_proxy:
+            self.db.changeTable(self.useful_proxy_queue)
+            exist_proxy = self.db.getAll()
             if validUsefulProxy(raw_proxy) and (raw_proxy not in exist_proxy):
-                self.db.changeTable(self.useful_proxy_queue)
+                # self.db.changeTable(self.useful_proxy_queue)
                 self.db.put(raw_proxy)
                 self.log.info('validProxy_a: %s validation pass' % raw_proxy)
             else:
